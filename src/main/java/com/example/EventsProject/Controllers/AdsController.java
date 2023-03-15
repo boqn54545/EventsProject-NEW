@@ -83,7 +83,7 @@ public class AdsController {
         if (user == null) {
             user = new User();
             user.setUsername("Default");
-            user.setEmail("Default");
+            user.setEmail("Default@gmail.com");
             userRepository.save(user);
         }
         Ad ad = adsRepository.findById(id).orElse(null);
@@ -104,7 +104,7 @@ public class AdsController {
             Set<User> applicants = ad.getApplicants();
             model.addAttribute("applicants", applicants);
             model.addAttribute("ad", ad);
-            return "templates/applicants.html";
+            return "applicants.html";
         } else {
             return "redirect:/event";
         }

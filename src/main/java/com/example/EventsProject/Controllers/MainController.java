@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
         @GetMapping()
         public String chooseAction(Model model){
-            return "applicants";
+            return "application";
         }
 }
