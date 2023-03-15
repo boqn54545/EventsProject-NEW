@@ -73,18 +73,27 @@ public class AdsService {
 
         }
     }
-    public void applyAd(Ad ad, User user) throws IllegalStateException {
-        Set<User> applicants = ad.getApplicants();
-        if (!applicants.contains(user)) {
-            applicants.add(user);
-            ad.setApplicants(applicants);
-            adsRepository.save(ad);
-        } else {
+//    public void applyAd(Ad ad, User user) throws IllegalStateException {
+//        Set<User> applicants = ad.getApplicants();
+//        if (!applicants.contains(user)) {
+//            applicants.add(user);
+//            ad.setApplicants(applicants);
+//            adsRepository.save(ad);
+//        } else {
+//            throw new IllegalStateException(String.format("User %s has already applied to ad %d", user.getUsername(), ad.getId()));
+//        }
+//    }
+public void applyAd(Ad ad, User user) throws IllegalStateException {
+    Set<User> applicants = ad.getApplicants();
+    for (User applicant : applicants) {
+        if (applicant.getUsername().equals(user.getUsername()) && applicant.getEmail().equals(user.getEmail())) {
             throw new IllegalStateException(String.format("User %s has already applied to ad %d", user.getUsername(), ad.getId()));
         }
     }
-
-
+    applicants.add(user);
+    ad.setApplicants(applicants);
+    adsRepository.save(ad);
+}
 
 
 }
