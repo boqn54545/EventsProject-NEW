@@ -44,20 +44,17 @@ public class AdsController {
         m.addAttribute("ad", ad);
         return "/createAds";
     }
-
     @GetMapping("/search")
     public String searchAds(Model model,
                             @RequestParam(required=false) String title,
-                            @RequestParam(required=false) Integer priceMin,
-                            @RequestParam(required=false) Integer priceMax,
                             @RequestParam(required=false) String city,
-                            @RequestParam(required=false) InterestsEnum interest,
-                            @RequestParam(required=false) Integer minAge,
-                            @RequestParam(required=false) Integer maxAge) {
-        List<Ad> ads = adsService.searchAds(title, priceMin, priceMax, city, interest, minAge, maxAge);
+                            @RequestParam(required=false) InterestsEnum interest
+    ) {
+        List<Ad> ads = adsService.searchAds(title, city, interest);
         model.addAttribute("ads", ads);
         return "index";
     }
+
     @PostMapping("submit")
     private ModelAndView saveAd(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
         if (bindingResult.hasErrors()) {

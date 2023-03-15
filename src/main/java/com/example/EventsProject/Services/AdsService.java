@@ -21,29 +21,19 @@ public class AdsService {
     private AdsRepository adsRepository;
     private static final Logger log = LoggerFactory.getLogger(AdsService.class);
 
-    public List<Ad> searchAds(String title, Integer priceMin, Integer priceMax, String city, InterestsEnum interest, Integer minAge, Integer maxAge) {
+    public List<Ad> searchAds(String title, String city, InterestsEnum interest) {
         Ad searchCriteria = new Ad();
         if (title != null && !title.isEmpty()) {
             searchCriteria.setTitle(title);
         }
-        if (priceMin != null) {
-            searchCriteria.setMinPrice(priceMin);
-        }
-        if (priceMax != null) {
-            searchCriteria.setMaxPrice(priceMax);
-        }
+
         if (city != null && !city.isEmpty()) {
             searchCriteria.setCity(city);
         }
         if (interest != null) {
             searchCriteria.setInterest(interest);
         }
-        if (minAge != null) {
-            searchCriteria.setMinAge(minAge);
-        }
-        if (maxAge != null) {
-            searchCriteria.setMaxAge(maxAge);
-        }
+
 
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase()
@@ -54,6 +44,7 @@ public class AdsService {
 
         return adsRepository.findAll(example);
     }
+
     public String saveAd(Ad ad, User user) {
         try {
             if (ad.getMinAge() != null && ad.getMaxAge() != null && ad.getMinAge() > ad.getMaxAge()) {
@@ -73,27 +64,18 @@ public class AdsService {
 
         }
     }
-//    public void applyAd(Ad ad, User user) throws IllegalStateException {
-//        Set<User> applicants = ad.getApplicants();
-//        if (!applicants.contains(user)) {
-//            applicants.add(user);
-//            ad.setApplicants(applicants);
-//            adsRepository.save(ad);
-//        } else {
-//            throw new IllegalStateException(String.format("User %s has already applied to ad %d", user.getUsername(), ad.getId()));
-//        }
-//    }
-public void applyAd(Ad ad, User user) throws IllegalStateException {
-    Set<User> applicants = ad.getApplicants();
-    for (User applicant : applicants) {
-        if (applicant.getUsername().equals(user.getUsername()) && applicant.getEmail().equals(user.getEmail())) {
-            throw new IllegalStateException(String.format("User %s has already applied to ad %d", user.getUsername(), ad.getId()));
+
+    public void applyAd(Ad ad, User user) throws IllegalStateException {
+        Set<User> applicants = ad.getApplicants();
+        for (User applicant : applicants) {
+            if (applicant.getUsername().equals(user.getUsername()) && applicant.getEmail().equals(user.getEmail())) {
+                throw new IllegalStateException(String.format("User %s has already applied to ad %d", user.getUsername(), ad.getId()));
+            }
         }
+        applicants.add(user);
+        ad.setApplicants(applicants);
+        adsRepository.save(ad);
     }
-    applicants.add(user);
-    ad.setApplicants(applicants);
-    adsRepository.save(ad);
-}
 
 
 }
