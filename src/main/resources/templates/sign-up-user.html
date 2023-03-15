@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Sign up</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src=https://code.jquery.com/jquery-3.6.0.js></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <style>
+    #footer {
+
+    display:block;
+    background: light gray;
+    height: 200px;
+    text-align: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 10%;            /* Footer height */
+}
+ .footer {
+
+    display:block;
+    background: light gray;
+    height: 200px;
+    text-align: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 15%;            /* Footer height */
+}
+#footer.p{
+}
+hr.new1 {
+  border: 2px solid gray;
+  border-radius: 5px;
+
+}
+body {
+  background-size: 100%;
+
+  background-repeat: no-repeat;
+
+}
+</style>
+</head>
+<body background='/bg1.PNG'>
+    <div class="container">
+        <h1>Регистрация</h1>
+        <form action="#" th:action="@{/user/submit}" method="post" th:object="${user}" class="col-md-6">
+            <p>USERNAME: <input type="text" th:field="*{username}" class="form-control border-3" required></p>
+            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger">First name error</p>
+            <p>Име: <input type="text" th:field="*{firstName}" class="form-control border-3" required></p>
+            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger">First name error</p>
+            <p>Презиме: <input type="text" th:field="*{secondName}" class="form-control border-3" required></p>
+            <p th:if="${#fields.hasErrors('secondName')}" th:errors="*{secondName}" class="text-danger">Second name error</p>
+            <p>Фамилия: <input type="text" th:field="*{lastName}" class="form-control border-3" required></p>
+            <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger">Last name error</p>
+<!--            <p>Град: <input type="text" th:field="*{town}" class="form-control border-3" required></p>-->
+<!--            <p th:if="${#fields.hasErrors('town')}" th:errors="*{town}" class="text-danger">Town error</p>-->
+            <p>Дата на раждане: <input type="date" th:field="*{birthDay}" class="form-control border-3" required></p>
+            <p th:if="${#fields.hasErrors('birthDay')}" th:errors="*{birthDay}" class="text-danger">BirthDay error</p>
+            <p>Email: <input type="email" th:field="*{email}" class="form-control border-3" required></p>
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">email error</p>
+<!--           <p>Телефонен номер: <input type="text" th:field="*{phoneNumber}" class="form-control border-3" required></p>-->
+<!--            <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger">Phone number error</p>-->
+            <p>Описание: <input type="text" th:field="*{description}" class="form-control border-3" required></p>
+            <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">Description error</p>
+
+
+
+            <input type="submit" value="Sign UP" class="btn btn-outline-success">
+            <a href="/" class="btn btn-outline-secondary">Back</a>
+        </form>
+    </div>
+    <div id="#footer">
+        <hr class="new1">
+        <center>
+
+        </center>
+    </div>
+</body>
+</html>

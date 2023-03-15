@@ -18,12 +18,24 @@ import javax.validation.Valid;
 public class UserController {
     @Autowired
     UserRepository userRepository;
-
-    @GetMapping("/create")
+    @PostMapping("/submit")
+    private String saveStudents(@Valid User user, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return "sign-up-user";
+        }
+        userRepository.save(user);
+        return "redirect:/";
+    }
+    @GetMapping("/register")
     private String createUser(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        return "/sign-up-user";
+        return "/signup_form";
     }
-
+//    @GetMapping("/register")
+//    public String showRegistrationForm(Model model) {
+//        model.addAttribute("user", new User());
+//
+//        return "signup_form";
+//    }
 }
