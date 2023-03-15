@@ -1,4 +1,4 @@
-package com.example.EventsProject;
+package com.example.EventsProject.Services;
 
 import com.example.EventsProject.Services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

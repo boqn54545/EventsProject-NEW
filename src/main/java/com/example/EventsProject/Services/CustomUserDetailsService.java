@@ -1,6 +1,5 @@
 package com.example.EventsProject.Services;
 
-import com.example.EventsProject.CustomUserDetails;
 import com.example.EventsProject.Entities.User;
 import com.example.EventsProject.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.example.EventsProject;
+package com.example.EventsProject.Services;
 
 import com.example.EventsProject.Entities.User;
 import org.springframework.security.core.GrantedAuthority;
