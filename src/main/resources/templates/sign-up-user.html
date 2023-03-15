@@ -60,7 +60,7 @@ body {
             <p>Фамилия: <input type="text" th:field="*{lastName}" class="form-control border-3" required></p>
             <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger">Last name error</p>
 <!--            <p>Град: <input type="text" th:field="*{town}" class="form-control border-3" required></p>-->
-<!--            <p th:if="${#fields.hasErrors('town')}" th:errors="*{town}" class="text-danger">Town error</p>-->
+<!--  sign-up-user          <p th:if="${#fields.hasErrors('town')}" th:errors="*{town}" class="text-danger">Town error</p>-->
             <p>Дата на раждане: <input type="date" th:field="*{birthDay}" class="form-control border-3" required></p>
             <p th:if="${#fields.hasErrors('birthDay')}" th:errors="*{birthDay}" class="text-danger">BirthDay error</p>
             <p>Email: <input type="email" th:field="*{email}" class="form-control border-3" required></p>

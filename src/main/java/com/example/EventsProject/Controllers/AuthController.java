@@ -43,7 +43,6 @@ public class AuthController {
             return "register";
         }
         userService.saveUser(user);
-//        model.addAttribute("successMessage", "User registered successfully!");
 
         return "login";
     }
