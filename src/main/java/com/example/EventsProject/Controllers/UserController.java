@@ -26,16 +26,17 @@ public class UserController {
         userRepository.save(user);
         return "redirect:/";
     }
-    @GetMapping("/create")
-    private String createUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        return "signup_form";
-    }
-//    @GetMapping("/register")
-//    public String showRegistrationForm(Model model) {
-//        model.addAttribute("user", new User());
-//
+//    @GetMapping("/create")
+//    private String createUser(Model model) {
+//        User user = new User();
+//        model.addAttribute("user", user);
 //        return "signup_form";
 //    }
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new User());
+
+        return "signup_form";
+    }
+
 }
