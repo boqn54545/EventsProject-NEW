@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Ad</title>
+</head>
+<body>
+<h1>Create Ad</h1>
+<form th:action="@{/event/submit}" th:object="${ad}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <label for="interest">Interest:</label>
+    <select id="interest" name="interest" th:field="*{interest}">
+        <option value="SPORTS">Sports</option>
+        <option value="MUSIC">Music</option>
+        <option value="FOOD">Food</option>
+        <option value="TRAVEL">Travel</option>
+        <option value="ART">Art</option>
+        <option value="TECHNOLOGY">Technology</option>
+        <option value="FASHION">Fashion</option>
+        <option value="OUTDOORS">Outdoors</option>
+    </select>
+    <br>
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" th:field="*{title}" required><br>
+    <label for="minPrice">Min price:</label>
+    <input type="number" id="minPrice" name="price" th:field="*{minPrice}" required><br>
+    <label for="maxPrice">Max price:</label>
+    <input type="number" id="maxPrice" name="price" th:field="*{maxPrice}" required><br>
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" th:field="*{city}" required><br>
+    <label for="description">Description:</label><br>
+    <textarea id="description" name="description" rows="4" cols="50" th:field="*{description}" required></textarea><br>
+    <label for="minAge">Minimum Age:</label>
+    <input type="number" id="minAge" name="minAge" th:field="*{minAge}" required><br>
+    <label for="maxAge">Maximum Age:</label>
+    <input type="number" id="maxAge" name="maxAge" th:field="*{maxAge}" required><br>
+    <label for="createdAt">Created At:</label>
+    <input type="datetime-local" id="createdAt" name="createdAt" th:field="*{createdAt}" required><br>
+    <label for="expireAt">Expire At:</label>
+    <input type="datetime-local" id="expireAt" name="expireAt" th:field="*{expireAt}" required><br>
+    <input type="submit" value="Create">
+</form>
+</body>
+</html>

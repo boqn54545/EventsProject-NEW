@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ads List</title>
+</head>
+<body>
+<h1>Ads List</h1>
+<a href="/event/createAds">Create new Ad</a>
+<table>
+    <form th:action="@{/event/search}" method="get">
+        <div class="form-group row">
+            <label for="title" class="col-sm-2 col-form-label">Title:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="title" name="title">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="minPrice" class="col-sm-2 col-form-label">Minimum Price:</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="minPrice" name="priceMin">
+            </div>
+            <label for="maxPrice" class="col-sm-2 col-form-label">Maximum Price:</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="maxPrice" name="priceMax">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="city" class="col-sm-2 col-form-label">City:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="city" name="city">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="interest" class="col-sm-2 col-form-label">Interests:</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="interest" name="interest">
+                    <option value="SPORTS">Sports</option>
+                    <option value="MUSIC">Music</option>
+                    <option value="FOOD">Food</option>
+                    <option value="TRAVEL">Travel</option>
+                    <option value="ART">Art</option>
+                    <option value="TECHNOLOGY">Technology</option>
+                    <option value="FASHION">Fashion</option>
+                    <option value="OUTDOORS">Outdoors</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="minAge" class="col-sm-2 col-form-label">Minimum Age:</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="minAge" name="minAge">
+            </div>
+            <label for="maxAge" class="col-sm-2 col-form-label">Maximum Age:</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="maxAge" name="maxAge">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+
+
+
+    </form>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Interest</th>
+        <th>Title</th>
+        <th>Price</th>
+        <th>City</th>
+        <th>Description</th>
+        <th>Age Range</th>
+        <th>Created At</th>
+        <th>Expire At</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="ad : ${ads}">
+        <td th:text="${ad.id}"></td>
+        <td th:text="${ad.user != null ? ad.user.name : ''}"></td>
+        <td th:text="${ad.interest}"></td>
+        <td th:text="${ad.title}"></td>
+        <td th:text="${ad.getPriceRange}"></td>
+        <td th:text="${ad.city}"></td>
+        <td th:text="${ad.description}"></td>
+        <td th:text="${ad.getAgeRange}"></td>
+        <td th:text="${ad.createdAt}"></td>
+        <td th:text="${ad.expireAt}"></td>
+        <td>
+            <form th:action="@{event/delete/{id}(id=${ad.id})}" method="post">
+                <input type = submit name="delete" value="Delete">
+            </form></td>
+        <td>
+            <form th:action="@{event/edit/{id}(id=${ad.id})}" method="post">
+                <input type = submit name="update" value="Update">
+            </form></td>
+        <td>
+            <th:block th:if="${not ad.applicants.contains(user)}">
+                <form th:action="@{event/apply/{id}(id=${ad.id})}" method="post">
+                    <button type="submit">Apply</button>
+                </form>
+            </th:block>
+            <a th:href="@{event/applicants/{id}(id=${ad.id})}">View Applicants</a>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
