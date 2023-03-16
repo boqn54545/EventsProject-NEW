@@ -37,6 +37,9 @@ public class User {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     public String getFirstName() {
         return firstName;
     }
@@ -118,8 +121,7 @@ public class User {
         this.id = id;
     }
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+
 
     public int getAge() {
         return age;

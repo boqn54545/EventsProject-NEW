@@ -50,7 +50,7 @@ body {
 <body background='/bg1.PNG'>
     <div class="container">
         <h1>Регистрация</h1>
-        <form action="#" th:action="@{/user/submit}" method="post" th:object="${user}" class="col-md-6">
+        <form action="#" th:action="@{/user/submitUser}" method="post" th:object="${user}" class="col-md-6">
             <p>USERNAME: <input type="text" th:field="*{username}" class="form-control border-3" required></p>
             <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger">First name error</p>
             <p>Име: <input type="text" th:field="*{firstName}" class="form-control border-3" required></p>

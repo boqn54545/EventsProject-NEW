@@ -44,7 +44,7 @@ public class AdsController {
         m.addAttribute("ad", ad);
         return "/createAds";
     }
-    @GetMapping(" /search")
+    @GetMapping("/search")
     public String searchAds(Model model,
                             @RequestParam(required=false) String title,
                             @RequestParam(required=false) String city,
