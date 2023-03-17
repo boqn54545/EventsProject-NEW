@@ -1,8 +1,7 @@
 package com.example.EventsProject.Controllers;
 
-import com.example.EventsProject.Entities.Ad;
+
 import com.example.EventsProject.Entities.User;
-import com.example.EventsProject.Enums.Role;
 import com.example.EventsProject.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,9 +27,8 @@ public class UserController {
      public String showUsers(Model m){
          Iterable<User> users = userRepository.findAll();
          m.addAttribute("users", users);
-         return "user";
+         return "users";
      }
-
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -46,7 +44,6 @@ public class UserController {
             return new ModelAndView("redirect:/");
         }else{
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setRole(Role.USER);
             userRepository.save(user);
             return new ModelAndView("redirect:/login");
         }}

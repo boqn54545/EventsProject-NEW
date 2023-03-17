@@ -1,9 +1,9 @@
 package com.example.EventsProject.Enums;
 
 public enum Role {
-    USER("User"),
-    ADMIN("Admin"),
-    ORGANIZER("Organizer");
+    USER("USER"),
+    ADMIN("ADMIN"),
+    ORGANIZER("ORGANIZER");
 
 
     private final String roleName;

@@ -47,12 +47,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/event/createAds").hasRole("ADMIN")
-                .anyRequest().permitAll()
+                .antMatchers("/event/createAds").hasAuthority("ADMIN")
+                .antMatchers("/event/edit/**").hasAuthority("ADMIN")
                 .and()
                 .formLogin()
                 .usernameParameter("email")
-                .defaultSuccessUrl("/users")
+                .defaultSuccessUrl("/event")
                 .permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll();

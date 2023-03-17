@@ -108,7 +108,7 @@ body {
         <tbody>
         <tr th:each="ad : ${ads}">
             <td th:text="${ad.id}"></td>
-            <td th:text="${ad.user != null ? ad.user.name : ''}"></td>
+            <td th:text="${ad.user != null ? ad.user.username : ''}"></td>
             <td th:text="${ad.interest}"></td>
             <td th:text="${ad.title}"></td>
             <td th:text="${ad.getPriceRange}"></td>
