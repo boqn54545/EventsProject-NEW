@@ -1,4 +1,4 @@
-package com.example.EventsProject.controllerTests;
+package com.example.EventsProject.RepositoriesTests;
 
 import com.example.EventsProject.Entities.User;
 import com.example.EventsProject.Repositories.UserRepository;
@@ -32,7 +32,6 @@ public class UserRepositoryTests {
         user.setSecondName("secName");
         user.setLastName("lastName");
         user.setDescription("Very HANDSOME!!");
-        user.setBirthDay(new Date());
 
         User savedUser = repo.save(user);
 

@@ -19,17 +19,15 @@ public class User {
     private Integer id;
     @Size(min=2, max=30)
     private String username;
-
     @Size(min=2, max=30)
     private String firstName;
     @Size(min=2, max=30)
     private String secondName;
     @Size(min=2, max=30)
     private String lastName;
-    @Past
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private Date birthDay;
-    private int age;
+
+    private String birthDay;
+
     @Email
     private String email;
     @Size(min=2, max=300)
@@ -64,13 +62,7 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Date getBirthDay() {
-        return birthDay;
-    }
 
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
-    }
 
     public String getDescription() {
         return description;
@@ -121,15 +113,11 @@ public class User {
         this.id = id;
     }
 
-
-
-    public int getAge() {
-        return age;
+    public String getBirthDay() {
+        return birthDay;
     }
 
-    public void setAge(int age) {
-        this.age = (LocalDate.now().getYear()-this.birthDay.getYear());
+    public void setBirthDay(String birthDay) {
+        this.birthDay = birthDay;
     }
-
-
 }

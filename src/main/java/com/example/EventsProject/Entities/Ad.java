@@ -1,8 +1,5 @@
 package com.example.EventsProject.Entities;
-
-
 import com.example.EventsProject.Enums.InterestsEnum;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;

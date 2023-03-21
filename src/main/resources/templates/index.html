@@ -56,6 +56,7 @@ body {
     </header>
     <h2>CREATE AD</h2>
     <a href="/event/createAds">Create new Ad</a>
+
     <table>
         <form th:action="@{/event/search}" method="get">
             <div class="form-group row">
@@ -138,12 +139,17 @@ body {
             </td>
         </tr>
         </tbody>
+
     </table>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout" />
+    </form>
 </div>
 <div id="footer">
     <hr class="new1">
     <center>
     </center>
+
 </div>
 </body>
 </html>

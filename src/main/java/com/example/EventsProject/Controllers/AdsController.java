@@ -79,8 +79,8 @@ public class AdsController {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             user = new User();
-            user.setUsername("Default");
-            user.setEmail("Default@gmail.com");
+            user.setUsername("TestUsername");
+            user.setEmail("Test@gmail.com");
             userRepository.save(user);
         }
         Ad ad = adsRepository.findById(id).orElse(null);
@@ -116,7 +116,7 @@ public class AdsController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editHotel(@PathVariable(name = "id") Long id, Model m){
+    public String editAd(@PathVariable(name = "id") Long id, Model m){
         m.addAttribute("ad",adsRepository.findById(id));
         return "/edit";
     }

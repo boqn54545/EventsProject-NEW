@@ -14,7 +14,6 @@
         <th>Second Name</th>
         <th>Last Name</th>
         <th>Birthday</th>
-        <th>Age</th>
         <th>Email</th>
         <th>Description</th>
         <th>Role</th>
@@ -24,16 +23,26 @@
     <tbody>
     <tr th:each="user : ${users}">
         <td th:text="${user.id}"></td>
+
         <td th:text="${user.username}"></td>
         <td th:text="${user.firstName}"></td>
         <td th:text="${user.secondName}"></td>
         <td th:text="${user.lastName}"></td>
         <td th:text="${user.birthDay}"></td>
-        <td th:text="${user.age}"></td>
         <td th:text="${user.email}"></td>
         <td th:text="${user.description}"></td>
         <td th:text="${user.role}"></td>
         <td th:text="${user.password}"></td>
+        <td>
+            <form th:action="@{/user/edit/{id}(id=${user.id})}" method="post">
+                <input type="submit" name="edit" value="Edit">
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/user/banUser/{id}(id=${user.id})}" method="post">
+                <input type="submit" name="ban" value="Ban">
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
