@@ -1,6 +1,7 @@
 package com.example.EventsProject.Controllers;
 import com.example.EventsProject.Entities.User;
 import com.example.EventsProject.Repositories.UserRepository;
+import com.example.EventsProject.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public String showUsers(Model m) {
@@ -72,33 +75,12 @@ public class UserController {
                 System.out.println(error.getDefaultMessage());
             });
             m.addAttribute("user", user);
-            m.addAttribute("error", "There was an error in the form data. Please correct the errors and try again.");
             return new ModelAndView("editUsers");
         }
-
-        Optional<User> optionalUser = userRepository.findById(user.getId());
-        if (optionalUser.isPresent()) {
-            User existingUser = optionalUser.get();
-            existingUser.setUsername(user.getUsername());
-            existingUser.setFirstName(user.getFirstName());
-            existingUser.setSecondName(user.getSecondName());
-            existingUser.setLastName(user.getLastName());
-            existingUser.setDescription(user.getDescription());
-
-            if (user.getPassword() != null) {
-                existingUser.setPassword(user.getPassword());
-            }
-            if (user.getRole() != null) {
-                existingUser.setRole(user.getRole());
-            }
-
-            existingUser.setEmail(user.getEmail());
-            existingUser.setBirthDay(user.getBirthDay());
-
-            userRepository.save(existingUser);
-        }
+        userService.editUser(user);
         return new ModelAndView("redirect:/user");
     }
+
 
 }
 

@@ -18,7 +18,6 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
-
 @Controller
 @RequestMapping("/event")
 public class AdsController {
@@ -106,8 +105,6 @@ public class AdsController {
             return "redirect:/event";
         }
     }
-
-
 
     @PostMapping("/delete/{id}")
     public ModelAndView deleteAd(@PathVariable(name = "id") Long id) {
