@@ -1,78 +1,104 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-
 <head>
     <meta charset="UTF-8">
     <title>Applicants for the Ad</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src=https://code.jquery.com/jquery-3.6.0.js></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
     <style>
-    #footer {
+        body {
+            background: #f8f9fa;
+        }
 
-    display:block;
-    background: light gray;
-    height: 200px;
-    text-align: center;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 10%;            /* Footer height */
-}
- .footer {
+        .header {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #007bff;
+        }
 
-    display:block;
-    background: light gray;
-    height: 200px;
-    text-align: center;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 15%;            /* Footer height */
-}
-#footer.p{
-}
-hr.new1 {
-  border: 2px solid gray;
-  border-radius: 5px;
+        .table-responsive {
+            max-height: 500px;
+            overflow: auto;
+        }
 
-}
-body {
-  background-size: 100%;
+        th {
+            font-weight: bold;
+        }
 
-  background-repeat: no-repeat;
+        td {
+            vertical-align: middle;
+        }
 
-}
-</style>
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        #footer {
+            background: light gray;
+            height: 200px;
+            text-align: center;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 10%;            /* Footer height */
+        }
+
+        hr.new1 {
+            border: 2px solid gray;
+            border-radius: 5px;
+        }
+    </style>
 </head>
-<body background='/bg1.PNG'>
+
+<body background='/bg3.png'>
 <div class="container">
     <header class="header">
-<h1>APPLICANTS LIST</h1>
+        <h1>Applicants List</h1>
     </header>
-
-    <table>
-    <thead>
-    <tr>
-        <th>Username</th>
-        <th>Email</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="applicant : ${applicants}">
-        <td th:text="${applicant.username}"></td>
-        <td th:text="${applicant.email}"></td>
-    </tr>
-    </tbody>
-</table></div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Birth Date</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="applicant : ${applicants}">
+                <td th:text="${applicant.username}"></td>
+                <td th:text="${applicant.email}"></td>
+                <td th:text="${applicant.birthDay}"></td>
+                <td>
+                    <form method="post" th:action="@{/applicants/removeUser/{adId}(adId=${ad.id})}">
+                        <input type="hidden" name="userId" th:value="${applicant.id}" />
+                        <button type="submit">Remove User</button>
+                    </form>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 <div id="footer">
     <hr class="new1">
     <center>
     </center>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-f6FYmhZ83KGq4LlYwYv+VCjxyAsy6/l9DHMz/W+qnDnWRyrzTh8xhBfjQk/NRVvE"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>

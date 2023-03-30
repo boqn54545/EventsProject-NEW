@@ -1,6 +1,7 @@
 package com.example.EventsProject.Entities;
 
 import com.example.EventsProject.Enums.Role;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class User {
     @Column(name = "id", nullable = false)
     private Integer id;
     @Size(min=2, max=30)
+    @Column(unique = true)
     private String username;
     @Size(min=2, max=30)
     private String firstName;
@@ -25,10 +27,9 @@ public class User {
     private String secondName;
     @Size(min=2, max=30)
     private String lastName;
-
     private String birthDay;
-
     @Email
+    @Column(unique = true)
     private String email;
     @Size(min=2, max=300)
     private String description;

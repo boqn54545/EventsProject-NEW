@@ -2,6 +2,7 @@ package com.example.EventsProject.Controllers;
 import com.example.EventsProject.Entities.Ad;
 import com.example.EventsProject.Entities.User;
 import com.example.EventsProject.Enums.InterestsEnum;
+import com.example.EventsProject.Enums.Role;
 import com.example.EventsProject.Repositories.AdsRepository;
 import com.example.EventsProject.Repositories.UserRepository;
 import com.example.EventsProject.Services.AdsService;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -44,12 +46,18 @@ public class AdsController {
         return "/createAds";
     }
     @GetMapping("/search")
-    public String searchAds(Model model,
-                            @RequestParam(required=false) String title,
-                            @RequestParam(required=false) String city,
-                            @RequestParam(required=false) InterestsEnum interest
+    public String searchAds(
+            Model model,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) InterestsEnum interest
     ) {
-        List<Ad> ads = adsService.searchAds(title, city, interest);
+        List<Ad> ads;
+        if (title != null || city != null || interest != null) {
+            ads = adsService.searchAds(title, city, interest);
+        } else {
+            ads = adsRepository.findAll();
+        }
         model.addAttribute("ads", ads);
         return "index";
     }
@@ -57,7 +65,7 @@ public class AdsController {
     @PostMapping("submit")
     private ModelAndView saveAd(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("/createAd");
+            return new ModelAndView("/createAds");
         } else {
             String username = principal.getName();
             User user = userRepository.findByUsername(username);
@@ -65,7 +73,24 @@ public class AdsController {
             if (warningMessage != null) {
                 model.addAttribute("warning", warningMessage);
                 model.addAttribute("ad", ad);
-                return new ModelAndView("/createAd");
+                return new ModelAndView("/createAds");
+            } else {
+                return new ModelAndView("redirect:/event");
+            }
+        }
+    }
+    @PostMapping("submitEdit")
+    private ModelAndView saveEditAd(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("/createAds");
+        } else {
+            String username = principal.getName();
+            User user = userRepository.findByUsername(username);
+            String warningMessage = adsService.saveAd(ad,user);
+            if (warningMessage != null) {
+                model.addAttribute("warning", warningMessage);
+                model.addAttribute("ad", ad);
+                return new ModelAndView("/edit");
             } else {
                 return new ModelAndView("redirect:/event");
             }
@@ -105,17 +130,41 @@ public class AdsController {
             return "redirect:/event";
         }
     }
-
     @PostMapping("/delete/{id}")
-    public ModelAndView deleteAd(@PathVariable(name = "id") Long id) {
-        adsRepository.deleteById(id);
-        return new ModelAndView("redirect:/event");
+    public String deleteAd(@PathVariable(name = "id") Long id, Model m, Principal principal){
+        String loggedInUsername = principal.getName();
+        Optional<Ad> adOptional = adsRepository.findById(id);
+        if (adOptional.isPresent()) {
+            Ad ad = adOptional.get();
+            User adUser = ad.getUser();
+
+            if (adUser.getRole() == null || !adUser.getRole().equals(Role.ADMIN)) {
+                if (!adUser.getUsername().equals(loggedInUsername)) {
+                    return "redirect:/event";
+                }
+            }
+            adsRepository.deleteById(id);
+            return "redirect:/event";
+        } else {
+            return "redirect:/event";
+        }
     }
+
 
     @PostMapping("/edit/{id}")
-    public String editAd(@PathVariable(name = "id") Long id, Model m){
-        m.addAttribute("ad",adsRepository.findById(id));
-        return "/edit";
-    }
+    public String editAd(@PathVariable(name = "id") Long id, Model m, Principal principal){
+        String loggedInUsername = principal.getName();
+        Optional<Ad> adOptional = adsRepository.findById(id);
+        if (adOptional.isPresent()) {
+            Ad ad = adOptional.get();
+            if (!ad.getUser().getUsername().equals(loggedInUsername)) {
+                return "redirect:/event";
+            }
 
+            m.addAttribute("ad", ad);
+            return "/edit";
+        } else {
+            return "redirect:/event";
+        }
+    }
 }

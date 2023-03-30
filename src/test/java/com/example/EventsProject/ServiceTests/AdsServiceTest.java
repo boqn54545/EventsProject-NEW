@@ -12,7 +12,6 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Example;
 
-
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -85,7 +84,23 @@ class AdsServiceTest {
         String actualErrorMessage = adsService.saveAd(ad, user);
 
 
-        assertEquals("Minimum age can't be higher than maximum age", actualErrorMessage);
+        assertEquals("Minimum age cannot be greater than maximum age", actualErrorMessage);
+    }
+    @Test
+    void testSaveAdWhenValidMinAge() {
+
+        User user = new User();
+        Ad ad = new Ad();
+        ad.setTitle("Ad");
+        ad.setCity("Razgrad");
+        ad.setMinAge(30);
+        ad.setMaxAge(38);
+
+
+        String actualMessage = adsService.saveAd(ad, user);
+
+
+        assertEquals(null, actualMessage);
     }
 
     @Test
@@ -99,7 +114,20 @@ class AdsServiceTest {
 
         String actualErrorMessage = adsService.saveAd(ad, user);
 
-        assertEquals("Minimum price can't be higher maximum price", actualErrorMessage);
+        assertEquals("Minimum price cannot be greater than maximum price", actualErrorMessage);
+    }
+    @Test
+    void testSaveAdWhenValidMinPrice() {
+        User user = new User();
+        Ad ad = new Ad();
+        ad.setTitle("Ad");
+        ad.setCity("Razgrad");
+        ad.setMinPrice(0);
+        ad.setMaxPrice(10);
+
+        String actualMessage = adsService.saveAd(ad, user);
+
+        assertEquals(null, actualMessage);
     }
 
 

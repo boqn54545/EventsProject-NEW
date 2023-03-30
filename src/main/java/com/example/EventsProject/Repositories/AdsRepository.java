@@ -14,17 +14,11 @@ public interface AdsRepository extends JpaRepository<Ad, Long> {
     @Query("SELECT a FROM Ad a WHERE " +
             "(:title IS NULL OR a.title LIKE %:title%) " +
             "AND (:interest IS NULL OR a.interest = :interest) " +
-            "AND (:priceMin IS NULL OR a.minPrice >= :priceMin) " +
-            "AND (:priceMax IS NULL OR a.maxPrice <= :priceMax) " +
-            "AND (:city IS NULL OR a.city = :city) " +
-            "AND (:minAge IS NULL OR a.minAge BETWEEN :minAge AND :maxAge) " +
-            "AND (:maxAge IS NULL OR a.maxAge BETWEEN :minAge AND :maxAge)")
+            "AND (:city IS NULL OR a.city = :city) "
+    )
 
     List<Ad> customSearch(@Param("title") String title,
                           @Param("interest") String interest,
-                          @Param("priceMin") Optional<Integer> priceMin,
-                          @Param("priceMax") Optional<Integer> priceMax,
-                          @Param("city") String city,
-                          @Param("minAge") Optional<Integer> minAge,
-                          @Param("maxAge") Optional<Integer> maxAge);
+                          @Param("city") String city);
+
 }

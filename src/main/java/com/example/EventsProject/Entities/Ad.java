@@ -1,6 +1,9 @@
 package com.example.EventsProject.Entities;
 import com.example.EventsProject.Enums.InterestsEnum;
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,24 +20,30 @@ public class Ad {
 
     @Enumerated(EnumType.STRING)
     private InterestsEnum interest;
-
+    @Size(min=2, max=30)
     private String title;
-
+    @Min(0)
+    @Max(9998)
     private Integer minPrice;
-
+    @Max(9999)
+    @Min(0)
     private Integer maxPrice;
-
+    @Size(min=2, max=15)
     private String city;
-
+    @Size(min=2, max=300)
     private String description;
-
+    @Min(0)
+    @Max(119)
     private Integer minAge;
-
+    @Min(0)
+    @Max(120)
     private Integer maxAge;
 
     private String createdAt;
 
     private String expireAt;
+
+
 
 
     @ManyToMany
@@ -46,7 +55,7 @@ public class Ad {
     public String getPriceRange() {
         return this.minPrice + " - " + this.maxPrice;
     }
-
+    public String getDateRange(){return this.createdAt + " -  "+ this.expireAt;}
 
     public Long getId() {
         return id;
@@ -63,7 +72,6 @@ public class Ad {
     public void setUser(User user) {
         this.user = user;
     }
-
 
     public InterestsEnum getInterest() {
         return interest;

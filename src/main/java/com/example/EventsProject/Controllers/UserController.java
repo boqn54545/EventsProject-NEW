@@ -9,9 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Optional;
+
 
 
 @Controller
@@ -43,19 +44,33 @@ public class UserController {
     private ModelAndView saveUser(@Valid User user, BindingResult bindingResult, Model m) {
         if (bindingResult.hasErrors()) {
             m.addAttribute("user", user);
-            return new ModelAndView("redirect:/");
-        } else {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
+            return new ModelAndView("redirect:/user/register");
+        } else if (!userService.isUsernameAvailable(user.getUsername())) {
+            bindingResult.rejectValue("username", "error.username", "Username is already taken");
+            return new ModelAndView("redirect:/user/register");
+        } else if (!userService.isEmailAvailable(user.getEmail())) {
+            bindingResult.rejectValue("email", "error.email", "Email is already taken");
+            return new ModelAndView("redirect:/user/register");
+        }else{
+            userService.saveUser(user);
             return new ModelAndView("redirect:/login");
-        }
-    }
+        }}
+
 
     @PostMapping("/edit/{id}")
-    public String editUserById(@PathVariable(name = "id") Integer id, Model m) {
-        Optional<User> userOptional = userRepository.findById(id);
+    public String editUserById(@PathVariable(name = "id") Integer id, Model m, Principal principal, @RequestParam(name = "name", required = false) String name) {
+        String loggedInUsername = principal.getName();
+        Optional<User> userOptional;
+        if (name != null) {
+            userOptional = Optional.ofNullable(userRepository.findByUsername(name));
+        } else {
+            userOptional = userRepository.findById(id);
+        }
         if (userOptional.isPresent()) {
             User user = userOptional.get();
+            if (!user.getUsername().equals(loggedInUsername)) {
+                return "user";
+            }
             m.addAttribute("user", user);
             return "editUsers";
         } else {

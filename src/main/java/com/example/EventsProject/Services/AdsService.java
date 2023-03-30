@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class AdsService {
 
     @Autowired
     private AdsRepository adsRepository;
-    private static final Logger log = LoggerFactory.getLogger(AdsService.class);
+
 
     public List<Ad> searchAds(String title, String city, InterestsEnum interest) {
         Ad searchCriteria = new Ad();
@@ -65,18 +66,23 @@ public class AdsService {
         }
     }
 
-    public void applyAd(Ad ad, User user) throws IllegalStateException {
-        Set<User> applicants = ad.getApplicants();
-
-        for (User applicant : applicants) {
-            if (applicant.getUsername().equals(user.getUsername()) && applicant.getEmail().equals(user.getEmail())) {
-                throw new IllegalStateException(String.format("User %s has already applied to ad %d", user.getUsername(), ad.getId()));
+    public ResponseEntity<String> applyAd(Ad ad, User user) {
+        try {
+            Set<User> applicants = ad.getApplicants();
+            for (User applicant : applicants) {
+                if (applicant.getUsername().equals(user.getUsername()) && applicant.getEmail().equals(user.getEmail())) {
+                    throw new IllegalStateException(String.format("User %s has already applied to ad %d", user.getUsername(), ad.getId()));
+                }
             }
+            applicants.add(user);
+            ad.setApplicants(applicants);
+            adsRepository.save(ad);
+            return ResponseEntity.ok("Application submitted successfully");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        applicants.add(user);
-        ad.setApplicants(applicants);
-        adsRepository.save(ad);
     }
+
 
 
 }

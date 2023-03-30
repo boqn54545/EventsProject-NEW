@@ -47,8 +47,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/event/createAds").hasAuthority("ADMIN")
-                .antMatchers("/event/edit/**").hasAuthority("ADMIN")
+                .antMatchers("/event/createAds").hasAuthority("ORGANIZER")
+                .antMatchers("/event/edit/**").hasAuthority("ORGANIZER")
+                .antMatchers("/event/delete/**").hasAnyAuthority("ORGANIZER","ADMIN")
+                .antMatchers("/event/apply/{id}/**").hasAnyAuthority("ORGANIZER","ADMIN","USER")
+                .antMatchers("/event/applicants/{id}/**").hasAnyAuthority("ORGANIZER","ADMIN","USER")
+                .antMatchers("/user//banUser/{id}/**").hasAnyAuthority("ADMIN")
+                .antMatchers("/user/saveUser").permitAll()
                 .and()
                 .formLogin()
                 .usernameParameter("email")

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create Ad</title>
+    <title>Create EVENT</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src=https://code.jquery.com/jquery-3.6.0.js></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -10,91 +10,143 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
     <style>
+
+    body {
+      background-image: url('/bg1.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    }
+
     #footer {
+      background-color: rgba(128, 128, 128, 0.8);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
 
-    display:block;
-    background: light gray;
-    height: 200px;
-    text-align: center;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 10%;            /* Footer height */
-}
- .footer {
-
-    display:block;
-    background: light gray;
-    height: 200px;
-    text-align: center;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 15%;            /* Footer height */
-}
-#footer.p{
-}
-hr.new1 {
-  border: 2px solid gray;
-  border-radius: 5px;
-
-}
-body {
-  background-size: 100%;
-
-  background-repeat: no-repeat;
-
+    hr.new1 {
+      border: 2px solid gray;
+      border-radius: 10px;
+    }
+       body {
+        background-size: 100%;
+        background-repeat: no-repeat;
+      }
+      .container {
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 100%;
 }
 
-
-    </style>
+</style>
 </head>
 <body background='/bg1.PNG'>
-<div class="container">
-    <header class="header">
-        <h1>CREATE AD</h1>
+<div class="container py-2">
+
+    <header class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/event">CREATE EVENT</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="row justify-content-center"></span>
+
+            </button>
+            <div class="d-flex justify-content-center" id="navbarNar">
+                <ul  class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/event/">Go Back To EVENTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Go back to Main Menu</a>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+
     </header>
 
     <form th:action="@{/event/submit}" th:object="${ad}" method="post">
-        <input type="hidden" th:field="*{id}"/>
-        <label for="interest">Interest:</label>
-        <select id="interest" name="interest" th:field="*{interest}">
-            <option value="SPORTS">Sports</option>
-            <option value="MUSIC">Music</option>
-            <option value="FOOD">Food</option>
-            <option value="TRAVEL">Travel</option>
-            <option value="ART">Art</option>
-            <option value="TECHNOLOGY">Technology</option>
-            <option value="FASHION">Fashion</option>
-            <option value="OUTDOORS">Outdoors</option>
-        </select>
-        <br>
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" th:field="*{title}" required><br>
-        <label for="minPrice">Min price:</label>
-        <input type="number" id="minPrice" name="price" th:field="*{minPrice}" required><br>
-        <label for="maxPrice">Max price:</label>
-        <input type="number" id="maxPrice" name="price" th:field="*{maxPrice}" required><br>
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city" th:field="*{city}" required><br>
-        <label for="description">Description:</label><br>
-        <textarea id="description" name="description" rows="4" cols="50" th:field="*{description}"
-                  required></textarea><br>
-        <label for="minAge">Minimum Age:</label>
-        <input type="number" id="minAge" name="minAge" th:field="*{minAge}" required><br>
-        <label for="maxAge">Maximum Age:</label>
-        <input type="number" id="maxAge" name="maxAge" th:field="*{maxAge}" required><br>
-        <label for="createdAt">Created At:</label>
-        <input type="datetime-local" id="createdAt" name="createdAt" th:field="*{createdAt}" required><br>
-        <label for="expireAt">Expire At:</label>
-        <input type="datetime-local" id="expireAt" name="expireAt" th:field="*{expireAt}" required><br>
-        <input type="submit" value="Create">
+
+        <input type="hidden" th:field="*{id}" />
+        <div class="form-group mb-3">
+            <label for="interest">Interest:</label>
+            <select id="interest" name="interest" th:field="*{interest}">
+                <option value="SPORTS">Sports</option>
+                <option value="MUSIC">Music</option>
+                <option value="FOOD">Food</option>
+                <option value="TRAVEL">Travel</option>
+                <option value="ART">Art</option>
+                <option value="TECHNOLOGY">Technology</option>
+                <option value="FASHION">Fashion</option>
+                <option value="OUTDOORS">Outdoors</option>
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" th:field="*{title}" required maxlength="15"><br>
+            <span th:if="${#fields.hasErrors('title')}" style="color:red" th:errors="*{title}"></span><br>
+        </div>
+        <div class="form-group mb-3">
+            <label for="minPrice">Min price:</label>
+            <input type="number" id="minPrice" name="price" th:field="*{minPrice}" required min="0" max="9999"><br>
+            <span th:if="${#fields.hasErrors('minPrice')}" style="color:red" th:errors="*{minPrice}"></span><br>
+        </div>
+        <div class="form-group mb-3">
+            <label for="maxPrice">Max price:</label>
+            <input type="number" id="maxPrice" name="price" th:field="*{maxPrice}" required min="0" max="9999"><br>
+            <span th:if="${#fields.hasErrors('maxPrice')}" style="color:red" th:errors="*{maxPrice}"></span><br>
+        </div>
+        <div class="form-group mb-3">
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" th:field="*{city}" required><br>
+            <span th:if="${#fields.hasErrors('city')}" style="color:red" th:errors="*{city}"></span><br>
+        </div>
+        <div class="form-group mb-3">
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description" rows="4" cols="50" th:field="*{description}" required maxlength="300"></textarea><br>
+            <span th:if="${#fields.hasErrors('description')}" style="color:red" th:errors="*{description}"></span><br>
+        </div>
+        <div class="form-group mb-3">
+            <label for="minAge">Minimum Age:</label>
+            <input type="number" id="minAge" name="minAge" th:field="*{minAge}" required min="0" max="120"><br>
+            <span th:if="${#fields.hasErrors('minAge')}" style="color:red" th:errors="*{minAge}"></span><br>
+        </div>
+        <div class="form-group mb-3">
+            <label for="maxAge">Maximum Age:</label>
+            <input type="number" id="maxAge" name="maxAge" th:field="*{maxAge}" required min="0" max="120"><br>
+            <span th:if="${#fields.hasErrors('maxAge')}" style="color:red" th:errors="*{maxAge}"></span><br>
+        </div>
+        <div class="form-group mb-3">
+            <label for="createdAt">Starts At:</label>
+            <input type="datetime-local" id="createdAt" name="createdAt" th:field="*{createdAt}" required><br>
+            <span th:if="${#fields.hasErrors('createdAt')}" style="color:red" th:errors="*{createdAt}"></span><br>
+        </div>
+        <div class="form-group mb-3">
+            <label for="expireAt">Ends At:</label>
+            <input type="datetime-local" id="expireAt" name="expireAt" th:field="*{expireAt}" required><br>
+            <span th:if="${#fields.hasErrors('expireAt')}" style="color:red" th:errors="*{expireAt}"></span><br>
+        </div>
+        <input type="submit" value="Update">
     </form>
 </div>
 <div id="footer">
     <hr class="new1">
     <center>
     </center>
+
 </div>
+
 </body>
 </html>

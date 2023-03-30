@@ -54,19 +54,16 @@ body {
         <form action="#" th:action="@{/user/editUser}" method="post" th:object="${user}" class="col-md-6">
             <input type="hidden" name="id" th:value="${user.id}">
 
-            <p>USERNAME: <input type="text" th:field="*{username}" class="form-control border-3" required></p>
-            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger">Username name error</p>
+
             <p>Име: <input type="text" th:field="*{firstName}" class="form-control border-3" required></p>
             <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger">First name error</p>
             <p>Презиме: <input type="text" th:field="*{secondName}" class="form-control border-3" required></p>
             <p th:if="${#fields.hasErrors('secondName')}" th:errors="*{secondName}" class="text-danger">Second name error</p>
             <p>Фамилия: <input type="text" th:field="*{lastName}" class="form-control border-3" required></p>
             <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger">Last name error</p>
-            <p>Дата на раждане: <input type="date" th:field="*{birthDay}" class="form-control border-3" required></p>
+            <p>Дата на раждане: <input type="date" th:field="*{birthDay}" class="form-control border-3" ></p>
             <p th:if="${#fields.hasErrors('birthDay')}" th:errors="*{birthDay}" class="text-danger">BirthDay error</p>
-            <p>Email: <input type="email" th:field="*{email}" class="form-control border-3" required></p>
-            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">email error</p>
-            <p>Описание: <input type="text" th:field="*{description}" class="form-control border-3" required></p>
+            <p>Описание: <input type="text" th:field="*{description}" class="form-control border-3" ></p>
             <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">Description error</p>
 
 
