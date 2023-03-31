@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.Optional;
-import java.util.Set;
+
 @Service
 public class ApplicantsService {
     private static final Logger log = LoggerFactory.getLogger(AdsService.class);

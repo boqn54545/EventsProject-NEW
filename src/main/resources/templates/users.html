@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
       xsi:schemaLocation="http://www.thymeleaf.org ">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -78,14 +79,18 @@ body {
         <td th:text="${user.description}"></td>
         <td th:text="${user.role}"></td>
         <td>
+        <div sec:authorize="isAuthenticated()">
             <form th:action="@{/user/edit/{id}(id=${user.id})}" method="post">
                 <input type="submit" name="edit" value="Edit">
             </form>
+        </div>
         </td>
         <td>
+            <div sec:authorize="hasAnyAuthority('ADMIN','ORGANIZER')">
             <form th:action="@{/user/banUser/{id}(id=${user.id})}" method="post">
                 <input type="submit" name="ban" value="Ban">
             </form>
+        </div>
         </td>
     </tr>
     </tbody>

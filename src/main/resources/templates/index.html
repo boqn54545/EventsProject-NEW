@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <title>Ads List</title>
@@ -97,10 +97,9 @@
                         <option value="FASHION">Fashion</option>
                         <option value="OUTDOORS">Outdoors</option>
                     </select>
-            <sec:authorize access="hasAuthority('ORGANIZER')">
-                <input type="checkbox" id="search-required-checkbox"> Search Required
-            </sec:authorize>
-
+            <div sec:authorize="hasAnyAuthority('ADMIN','ORGANIZER')">
+                <input type="checkbox" id="search-required-checkbox" required> Search Required
+            </div>
 
         </div>
 
@@ -145,7 +144,6 @@
         <table class="table table-hover table-striped">
             <thead>
             <tr>
-                <th>ID</th>
                 <th>User</th>
                 <th>Interest</th>
                 <th>Title</th>
@@ -159,7 +157,6 @@
             <tbody>
         <tbody>
         <tr th:each="ad : ${ads}">
-            <td th:text="${ad.id}"></td>
             <td th:text="${ad.user != null ? ad.user.username : ''}"></td>
             <td th:text="${ad.interest}"></td>
             <td th:text="${ad.title}"></td>
@@ -170,28 +167,31 @@
             <td th:text="${ad.getDateRange}"></td>
 
             <td>
-
+                <div sec:authorize="hasAuthority('ORGANIZER')">
                 <form th:action="@{event/delete/{id}(id=${ad.id})}" method="post">
                     <input type=submit  class="btn btn-secondary" name="delete" value="Delete">
                 </form>
-                
+                </div>
             </td>
             <td>
+                <div sec:authorize="hasAuthority('ORGANIZER')">
                 <form th:action="@{event/edit/{id}(id=${ad.id})}" method="post">
                     <input type=submit  class="btn btn-secondary"   name="update" value="Update">
                 </form>
+                </div>
             </td>
             <td>
-
+                <div sec:authorize="isAuthenticated()">
                     <th:block th:if="${not ad.applicants.contains(user)}">
                         <form th:action="@{applicants/apply/{id}(id=${ad.id})}" method="post">
                             <button type="submit">Apply</button>
                         </form>
                     </th:block>
-
-                <a th:href="@{/applicants/{id}(id=${ad.id})}">View Applicants</a>
+                    <a th:href="@{/applicants/{id}(id=${ad.id})}">View Applicants</a>
+                </div>
 
             </td>
+
         </tr>
         </tbody>
 
