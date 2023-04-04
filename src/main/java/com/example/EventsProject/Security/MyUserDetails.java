@@ -1,4 +1,4 @@
-package com.example.EventsProject.Services;
+package com.example.EventsProject.Security;
 
 import com.example.EventsProject.Entities.User;
 import com.example.EventsProject.Enums.Role;

@@ -2,6 +2,7 @@ package com.example.EventsProject.Services;
 
 import com.example.EventsProject.Entities.User;
 import com.example.EventsProject.Repositories.UserRepository;
+import com.example.EventsProject.Security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

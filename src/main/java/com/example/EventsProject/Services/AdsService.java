@@ -4,20 +4,25 @@ import com.example.EventsProject.Entities.Ad;
 import com.example.EventsProject.Entities.User;
 import com.example.EventsProject.Enums.InterestsEnum;
 import com.example.EventsProject.Repositories.AdsRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.example.EventsProject.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
 @Service
 public class AdsService {
-
+     @Autowired
+    private UserRepository userRepository;
     @Autowired
     private AdsRepository adsRepository;
 
@@ -27,7 +32,6 @@ public class AdsService {
         if (title != null && !title.isEmpty()) {
             searchCriteria.setTitle(title);
         }
-
         if (city != null && !city.isEmpty()) {
             searchCriteria.setCity(city);
         }
@@ -65,7 +69,21 @@ public class AdsService {
 
         }
     }
-
+       public ModelAndView SubmitAd(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("/createAds");
+        } else {
+            String username = principal.getName();
+            User user = userRepository.findByUsername(username);
+            String warningMessage = saveAd(ad,user);
+            if (warningMessage != null) {
+                model.addAttribute("warning", warningMessage);
+                model.addAttribute("ad", ad);
+                return new ModelAndView("/createAds");
+            } else {
+                return new ModelAndView("redirect:/event");
+            }
+        }}
     public ResponseEntity<String> applyAd(Ad ad, User user) {
         try {
             Set<User> applicants = ad.getApplicants();
@@ -82,8 +100,8 @@ public class AdsService {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-
-
 }
+
+
+
 

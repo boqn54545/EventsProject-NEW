@@ -1,6 +1,7 @@
 package com.example.EventsProject.Controllers;
 import com.example.EventsProject.Entities.User;
 import com.example.EventsProject.Repositories.UserRepository;
+import com.example.EventsProject.Services.AuthenticationService;
 import com.example.EventsProject.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Optional;
+
 
 
 
@@ -21,10 +22,11 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private AuthenticationService authenticationService;
     @GetMapping
     public String showUsers(Model m) {
         Iterable<User> users = userRepository.findAll();
@@ -36,46 +38,17 @@ public class UserController {
     public String showRegistrationForm(Model model) {
         User user = new User();
         model.addAttribute("user", new User());
-
         return "register";
     }
-
     @PostMapping("saveUser")
-    private ModelAndView saveUser(@Valid User user, BindingResult bindingResult, Model m) {
-        if (bindingResult.hasErrors()) {
-            m.addAttribute("user", user);
-            return new ModelAndView("redirect:/user/register");
-        } else if (!userService.isUsernameAvailable(user.getUsername())) {
-            bindingResult.rejectValue("username", "error.username", "Username is already taken");
-            return new ModelAndView("redirect:/user/register");
-        } else if (!userService.isEmailAvailable(user.getEmail())) {
-            bindingResult.rejectValue("email", "error.email", "Email is already taken");
-            return new ModelAndView("redirect:/user/register");
-        }else{
-            userService.saveUser(user);
-            return new ModelAndView("redirect:/login");
-        }}
+    public ModelAndView registerUser(@Valid User user, BindingResult bindingResult, Model m) {
+      return authenticationService.registerUser(user,bindingResult,m);
+    }
 
 
     @PostMapping("/edit/{id}")
-    public String editUserById(@PathVariable(name = "id") Integer id, Model m, Principal principal, @RequestParam(name = "name", required = false) String name) {
-        String loggedInUsername = principal.getName();
-        Optional<User> userOptional;
-        if (name != null) {
-            userOptional = Optional.ofNullable(userRepository.findByUsername(name));
-        } else {
-            userOptional = userRepository.findById(id);
-        }
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            if (!user.getUsername().equals(loggedInUsername)) {
-                return "user";
-            }
-            m.addAttribute("user", user);
-            return "editUsers";
-        } else {
-            return "editUsers";
-        }
+    public ModelAndView editUserById(@PathVariable(name = "id") Integer id, Model m, Principal principal, @RequestParam(name = "name", required = false) String name) {
+        return  userService.editUserByIdService(id,m,principal,name);
     }
 
     @PostMapping("/banUser/{id}")

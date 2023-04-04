@@ -4,6 +4,7 @@ import com.example.EventsProject.Controllers.UserController;
 
 import com.example.EventsProject.Entities.User;
 import com.example.EventsProject.Repositories.UserRepository;
+import com.example.EventsProject.Services.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,9 +38,11 @@ public class UserRepositoryTests {
     private Model m;
     @Mock
     private UserRepository userRepository;
-
-    @InjectMocks
+    @Mock
+    private UserService userService;
+    @Mock
     private UserController userController;
+
 
 
 
@@ -78,8 +81,8 @@ public class UserRepositoryTests {
         user.setDescription("Very HANDSOME!!");
 
 
-         String editedUser = userController.editUserById(1,m,principal,user.getUsername());
-
+         ModelAndView editedUser = userController.editUserById(1,m,principal,user.getUsername());
+       assertEquals(null,editedUser);
     }
 
         @Test

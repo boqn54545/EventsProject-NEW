@@ -1,5 +1,8 @@
 package com.example.EventsProject.Enums;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum InterestsEnum {
     SPORTS("Sports"),
     MUSIC("Music"),
@@ -10,14 +13,16 @@ public enum InterestsEnum {
     FASHION("Fashion"),
     OUTDOORS("Outdoors");
 
-    private final String Interests;
 
-    InterestsEnum(String Interest) {
-        this.Interests = Interest;
+    private final String interest;
+
+    InterestsEnum(String interest) {
+        this.interest = interest;
     }
 
-    public String getInterests() {
-        return Interests;
+    public String getInterest() {
+        return interest;
     }
+
 }
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import java.security.Principal;
 import java.util.Optional;
 
@@ -22,8 +23,10 @@ public class ApplicantsService {
     private UserRepository userRepository;
     @Autowired
     private AdsService adsService;
+    @Autowired
+    private UserService userService;
 
-    public ModelAndView applyToAdd(Long id, Principal principal) {
+    public ModelAndView checkIfUserCanApplyToAd(Long id, Principal principal) {
         if (principal == null) {
             return new ModelAndView("redirect:/user/register");
         } else {

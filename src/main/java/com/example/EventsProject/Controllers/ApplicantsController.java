@@ -33,8 +33,9 @@ public class ApplicantsController {
     private ApplicantsService applicantsService;
     @PostMapping("/apply/{id}")
     public ModelAndView applyAd(@PathVariable(name = "id") Long id, Principal principal) {
-        return applicantsService.applyToAdd(id, principal);
+        return applicantsService.checkIfUserCanApplyToAd(id, principal);
     }
+
 
     @GetMapping("/{id}")
     public String showApplicants(@PathVariable(name = "id") Long id, Model model) {

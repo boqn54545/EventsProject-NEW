@@ -6,6 +6,7 @@ import com.example.EventsProject.Enums.Role;
 import com.example.EventsProject.Repositories.AdsRepository;
 import com.example.EventsProject.Repositories.UserRepository;
 import com.example.EventsProject.Services.AdsService;
+import com.example.EventsProject.Services.ApplicantsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 
 @Controller
 @RequestMapping("/event")
@@ -31,6 +32,8 @@ public class AdsController {
     private UserRepository userRepository;
     @Autowired
     private AdsService adsService;
+    @Autowired
+    private ApplicantsService applicantsService;
 
     @GetMapping
     public String getAllAds(Model m) {
@@ -64,20 +67,7 @@ public class AdsController {
 
     @PostMapping("submit")
     private ModelAndView saveAd(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
-        if (bindingResult.hasErrors()) {
-            return new ModelAndView("/createAds");
-        } else {
-            String username = principal.getName();
-            User user = userRepository.findByUsername(username);
-            String warningMessage = adsService.saveAd(ad,user);
-            if (warningMessage != null) {
-                model.addAttribute("warning", warningMessage);
-                model.addAttribute("ad", ad);
-                return new ModelAndView("/createAds");
-            } else {
-                return new ModelAndView("redirect:/event");
-            }
-        }
+     return adsService.SubmitAd(ad,bindingResult,principal,model);
     }
     @PostMapping("submitEdit")
     private ModelAndView saveEditAd(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
@@ -101,37 +91,13 @@ public class AdsController {
     public ModelAndView applyAd(@PathVariable(name = "id") Long id, Principal principal) {
         String username = principal.getName();
         User user = userRepository.findByUsername(username);
-        if (user == null) {
-            user = new User();
-            user.setUsername("TestUsername");
-            user.setEmail("Test@gmail.com");
-            userRepository.save(user);
-        }
-        Ad ad = adsRepository.findById(id).orElse(null);
-        if (ad != null) {
-            adsService.applyAd(ad, user);
-            log.info("User {} applied to ad {}", user.getUsername(), ad.getId());
-            return new ModelAndView("redirect:/event");
-        } else {
-            return new ModelAndView("redirect:/event");
-        }
+       return applicantsService.checkIfUserCanApplyToAd(id,principal);
     }
 
 
-    @GetMapping("/applicants/{id}")
-    public String showApplicants(@PathVariable(name = "id") Long id, Model model) {
-        Ad ad = adsRepository.findById(id).orElse(null);
-        if (ad != null) {
-            Set<User> applicants = ad.getApplicants();
-            model.addAttribute("applicants", applicants);
-            model.addAttribute("ad", ad);
-            return "applicants.html";
-        } else {
-            return "redirect:/event";
-        }
-    }
+
     @PostMapping("/delete/{id}")
-    public String deleteAd(@PathVariable(name = "id") Long id, Model m, Principal principal){
+    public String deleteAd(@PathVariable(name = "id") Long id, Principal principal){
         String loggedInUsername = principal.getName();
         Optional<Ad> adOptional = adsRepository.findById(id);
         if (adOptional.isPresent()) {

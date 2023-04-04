@@ -1,6 +1,7 @@
-package com.example.EventsProject.Services;
+package com.example.EventsProject.Security;
 
 
+import com.example.EventsProject.Services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
