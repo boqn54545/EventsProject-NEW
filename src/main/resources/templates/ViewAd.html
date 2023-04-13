@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create EVENT</title>
+    <title>EDIT AD</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src=https://code.jquery.com/jquery-3.6.0.js></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -56,7 +56,7 @@
 
     <header class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/event">CREATE EVENT</a>
+            <a class="navbar-brand" href="/event">EDIT EVENT</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="row justify-content-center"></span>
@@ -77,70 +77,53 @@
 
     </header>
 
-    <form th:action="@{/event/submit}" th:object="${ad}" method="post">
+    <form th:action="@{/event/submitEdit}" th:object="${ad}" method="post">
 
-        <input type="hidden" th:field="*{id}" />
         <div class="form-group mb-3">
             <label for="interest">Interest:</label>
-            <select class="form-select" id="interest" name="interest" required>
-                <option value="">Select Interest</option>
-                <option value="SPORTS">Sports</option>
-                <option value="MUSIC">Music</option>
-                <option value="FOOD">Food</option>
-                <option value="TRAVEL">Travel</option>
-                <option value="ART">Art</option>
-                <option value="TECHNOLOGY">Technology</option>
-                <option value="FASHION">Fashion</option>
-                <option value="OUTDOORS">Outdoors</option>
-            </select>
-        </div>
+                <td type="text" id="interest" name="interest" th:text="*{interest}"></td>
+            </div>
+        <h4>Host of Event</h4>
+        <td th:text="${ad.user != null ? ad.user.username : ''}"></td>
         <div class="form-group mb-3">
             <label for="title">Title:</label>
-            <input type="text" id="title" name="title" th:field="*{title}" required maxlength="30"><br>
-            <span th:if="${#fields.hasErrors('title')}" style="color:red" th:errors="*{title}"></span><br>
+            <td type="text" id="title" name="title" th:text="*{title}"></td>
         </div>
         <div class="form-group mb-3">
             <label for="minPrice">Min price:</label>
-            <input type="number" id="minPrice" name="price" th:field="*{minPrice}" required min="0" max="9999"><br>
-            <span th:if="${#fields.hasErrors('minPrice')}" style="color:red" th:errors="*{minPrice}"></span><br>
+            <td type="number" id="minPrice" name="price" th:text="*{minPrice}"></td>
         </div>
         <div class="form-group mb-3">
             <label for="maxPrice">Max price:</label>
-            <input type="number" id="maxPrice" name="price" th:field="*{maxPrice}" required min="0" max="9999"><br>
-            <span th:if="${#fields.hasErrors('maxPrice')}" style="color:red" th:errors="*{maxPrice}"></span><br>
+            <td type="number" id="maxPrice" name="price" th:text="*{maxPrice}"><td>
         </div>
         <div class="form-group mb-3">
             <label for="city">City:</label>
-            <input type="text" id="city" name="city" th:field="*{city}" required><br>
-            <span th:if="${#fields.hasErrors('city')}" style="color:red" th:errors="*{city}"></span><br>
+            <td type="text" id="city" name="city" th:text="*{city}"></td>
         </div>
         <div class="form-group mb-3">
             <label for="description">Description:</label><br>
-            <textarea id="description" name="description" rows="4" cols="50" th:field="*{description}" required maxlength="300"></textarea><br>
-            <span th:if="${#fields.hasErrors('description')}" style="color:red" th:errors="*{description}"></span><br>
+            <td id="description" name="description"  th:text="*{description}"></td>
         </div>
         <div class="form-group mb-3">
             <label for="minAge">Minimum Age:</label>
-            <input type="number" id="minAge" name="minAge" th:field="*{minAge}" required min="0" max="120"><br>
-            <span th:if="${#fields.hasErrors('minAge')}" style="color:red" th:errors="*{minAge}"></span><br>
+            <td type="number" id="minAge" name="minAge" th:text="*{minAge}" ></td>
         </div>
         <div class="form-group mb-3">
             <label for="maxAge">Maximum Age:</label>
-            <input type="number" id="maxAge" name="maxAge" th:field="*{maxAge}" required min="0" max="120"><br>
-            <span th:if="${#fields.hasErrors('maxAge')}" style="color:red" th:errors="*{maxAge}"></span><br>
+            <td type="number" id="maxAge" name="maxAge" th:text="*{maxAge}"></td>
         </div>
         <div class="form-group mb-3">
             <label for="createdAt">Starts At:</label>
-            <input type="datetime-local" id="createdAt" name="createdAt" th:field="*{createdAt}" required><br>
-            <span th:if="${#fields.hasErrors('createdAt')}" style="color:red" th:errors="*{createdAt}"></span><br>
+            <td type="datetime-local" id="createdAt" name="createdAt" th:text="*{createdAt}"></td>
         </div>
         <div class="form-group mb-3">
             <label for="expireAt">Ends At:</label>
-            <input type="datetime-local" id="expireAt" name="expireAt" th:field="*{expireAt}" required><br>
-            <span th:if="${#fields.hasErrors('expireAt')}" style="color:red" th:errors="*{expireAt}"></span><br>
+            <td type="datetime-local" id="expireAt" name="expireAt" th:text="*{expireAt}"></td>
         </div>
-        <input type="submit" value="Create" class="btn btn-secondary">
+
         <a th:href="@{/event}" class="btn btn-secondary">Go Back</a>
+
 
     </form>
 </div>

@@ -45,7 +45,7 @@ class AdsServiceTest {
         List<Ad> expectedAds = Collections.singletonList(new Ad());
         when(adsRepository.findAll(any(Example.class))).thenReturn(expectedAds);
 
-        List<Ad> actualAds = adsService.searchAds(title, city, interest);
+        List<Ad> actualAds = adsService.searchAdsService(title, city, interest);
 
         assertEquals(expectedAds, actualAds);
     }
@@ -61,11 +61,11 @@ class AdsServiceTest {
         ad.setMaxAge(30);
         ad.setMinPrice(10);
         ad.setMaxPrice(20);
-        ad.setInterest(InterestsEnum.MUSIC);
+        ad.setInterest(InterestsEnum.ART);
         when(adsRepository.save(ad)).thenReturn(ad);
 
 
-        String ErrorMessage = adsService.saveAd(ad, user);
+        String ErrorMessage = adsService.saveAdService(ad, user);
 
         assertNull(ErrorMessage);
     }
@@ -81,7 +81,7 @@ class AdsServiceTest {
         ad.setMaxAge(18);
 
 
-        String actualErrorMessage = adsService.saveAd(ad, user);
+        String actualErrorMessage = adsService.saveAdService(ad, user);
 
 
         assertEquals("Minimum age cannot be greater than maximum age", actualErrorMessage);
@@ -97,7 +97,7 @@ class AdsServiceTest {
         ad.setMaxAge(38);
 
 
-        String actualMessage = adsService.saveAd(ad, user);
+        String actualMessage = adsService.saveAdService(ad, user);
 
 
         assertEquals(null, actualMessage);
@@ -112,7 +112,7 @@ class AdsServiceTest {
         ad.setMinPrice(20);
         ad.setMaxPrice(10);
 
-        String actualErrorMessage = adsService.saveAd(ad, user);
+        String actualErrorMessage = adsService.saveAdService(ad, user);
 
         assertEquals("Minimum price cannot be greater than maximum price", actualErrorMessage);
     }
@@ -125,7 +125,7 @@ class AdsServiceTest {
         ad.setMinPrice(0);
         ad.setMaxPrice(10);
 
-        String actualMessage = adsService.saveAd(ad, user);
+        String actualMessage = adsService.saveAdService(ad, user);
 
         assertEquals(null, actualMessage);
     }
@@ -148,7 +148,7 @@ class AdsServiceTest {
 
             when(adsRepository.save(any(Ad.class))).thenReturn(ad);
 
-            assertDoesNotThrow(() -> adsService.applyAd(ad, user));
+            assertDoesNotThrow(() -> adsService.applyAdService(ad, user));
 
             verify(adsRepository).save(adCaptor.capture());
             Ad savedAd = adCaptor.getValue();

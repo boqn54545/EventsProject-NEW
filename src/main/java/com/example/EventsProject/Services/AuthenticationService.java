@@ -13,17 +13,19 @@ import javax.validation.Valid;
 public class AuthenticationService {
     @Autowired
     private UserService userService;
-    public ModelAndView registerUser(@Valid User user, BindingResult bindingResult, Model m) {
+    public ModelAndView registerUserService(@Valid User user, BindingResult bindingResult, Model m) {
         if (bindingResult.hasErrors()) {
             m.addAttribute("user", user);
-            return new ModelAndView("redirect:/user/register");
+            return new ModelAndView("user/register", "user", user);
         } else if (!userService.isUsernameAvailable(user.getUsername())) {
             bindingResult.rejectValue("username", "error.username", "Username is already taken");
-            return new ModelAndView("redirect:/user/register");
+            m.addAttribute("user", user);
+            return new ModelAndView("user/register", "user", user);
         } else if (!userService.isEmailAvailable(user.getEmail())) {
             bindingResult.rejectValue("email", "error.email", "Email is already taken");
-            return new ModelAndView("redirect:/user/register");
-        }else{
+            m.addAttribute("user", user);
+            return new ModelAndView("user/register", "user", user);
+        } else {
             userService.saveUser(user);
             return new ModelAndView("redirect:/login");
         }

@@ -33,7 +33,7 @@ public class ApplicantsController {
     private ApplicantsService applicantsService;
     @PostMapping("/apply/{id}")
     public ModelAndView applyAd(@PathVariable(name = "id") Long id, Principal principal) {
-        return applicantsService.checkIfUserCanApplyToAd(id, principal);
+        return applicantsService.checkIfUserCanApplyToAdService(id, principal);
     }
 
 
@@ -53,7 +53,7 @@ public class ApplicantsController {
     @PostMapping("/removeUser/{adId}")
     public ModelAndView removeUser(@PathVariable(name = "adId") Long adId, @RequestParam(name = "userId") Integer userId, Principal principal) {
         String loggedInUsername = principal.getName();
-        if (applicantsService.removeUserFromAd(adId, userId, loggedInUsername)) {
+        if (applicantsService.removeUserFromAdService(adId, userId, loggedInUsername)) {
             return new ModelAndView("redirect:/applicants/" + adId);
         } else {
             return new ModelAndView("redirect:/applicants/" + adId);

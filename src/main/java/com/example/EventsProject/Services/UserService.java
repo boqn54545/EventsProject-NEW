@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
+
 import java.security.Principal;
 import java.util.Optional;
 
@@ -21,6 +21,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+
 
     public boolean isUsernameAvailable(String username) {
         return userRepository.findByUsername(username) == null;
@@ -56,7 +58,7 @@ public class UserService {
         }
     }
 
-        public void editUser (User user){
+        public void editUserService (User user){
             Optional<User> optionalUser = userRepository.findById(Math.toIntExact(user.getId()));
             if (optionalUser.isPresent()) {
                 User existingUser = optionalUser.get();

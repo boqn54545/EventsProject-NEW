@@ -26,7 +26,7 @@ public class ApplicantsService {
     @Autowired
     private UserService userService;
 
-    public ModelAndView checkIfUserCanApplyToAd(Long id, Principal principal) {
+    public ModelAndView checkIfUserCanApplyToAdService(Long id, Principal principal) {
         if (principal == null) {
             return new ModelAndView("redirect:/user/register");
         } else {
@@ -40,7 +40,7 @@ public class ApplicantsService {
             }
             Ad ad = adsRepository.findById(id).orElse(null);
             if (ad != null) {
-                adsService.applyAd(ad, user);
+                adsService.applyAdService(ad, user);
                 log.info("User {} applied to ad {}", user.getUsername(), ad.getId());
                 return new ModelAndView("redirect:/event");
             } else {
@@ -53,7 +53,7 @@ public class ApplicantsService {
 
 
 
-        public boolean removeUserFromAd(Long adId, Integer userId, String loggedInUsername) {
+        public boolean removeUserFromAdService(Long adId, Integer userId, String loggedInUsername) {
             Optional<Ad> adOptional = adsRepository.findById(adId);
             if (adOptional.isPresent()) {
                 Ad ad = adOptional.get();
@@ -63,6 +63,7 @@ public class ApplicantsService {
                         User user = userOptional.get();
                         if (ad.getApplicants().contains(user)) {
                             ad.getApplicants().remove(user);
+
                             adsRepository.save(ad);
                             log.info("User {} was removed from ad {}", user.getUsername(), ad.getId());
                             return true;

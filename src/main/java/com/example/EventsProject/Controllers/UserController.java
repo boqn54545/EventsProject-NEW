@@ -42,7 +42,7 @@ public class UserController {
     }
     @PostMapping("saveUser")
     public ModelAndView registerUser(@Valid User user, BindingResult bindingResult, Model m) {
-      return authenticationService.registerUser(user,bindingResult,m);
+      return authenticationService.registerUserService(user,bindingResult,m);
     }
 
 
@@ -65,7 +65,7 @@ public class UserController {
             m.addAttribute("user", user);
             return new ModelAndView("editUsers");
         }
-        userService.editUser(user);
+        userService.editUserService(user);
         return new ModelAndView("redirect:/user");
     }
 

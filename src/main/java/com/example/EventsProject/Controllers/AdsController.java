@@ -2,12 +2,14 @@ package com.example.EventsProject.Controllers;
 import com.example.EventsProject.Entities.Ad;
 import com.example.EventsProject.Entities.User;
 import com.example.EventsProject.Enums.InterestsEnum;
-import com.example.EventsProject.Enums.Role;
 import com.example.EventsProject.Repositories.AdsRepository;
 import com.example.EventsProject.Repositories.UserRepository;
 import com.example.EventsProject.Services.AdsService;
 import com.example.EventsProject.Services.ApplicantsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +37,7 @@ public class AdsController {
     @Autowired
     private ApplicantsService applicantsService;
 
+
     @GetMapping
     public String getAllAds(Model m) {
         Iterable<Ad> ads = adsRepository.findAll();
@@ -57,7 +60,7 @@ public class AdsController {
     ) {
         List<Ad> ads;
         if (title != null || city != null || interest != null) {
-            ads = adsService.searchAds(title, city, interest);
+            ads = adsService.searchAdsService(title, city, interest);
         } else {
             ads = adsRepository.findAll();
         }
@@ -67,31 +70,16 @@ public class AdsController {
 
     @PostMapping("submit")
     private ModelAndView saveAd(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
-     return adsService.SubmitAd(ad,bindingResult,principal,model);
+     return adsService.SubmitAdService(ad,bindingResult,principal,model);
     }
     @PostMapping("submitEdit")
-    private ModelAndView saveEditAd(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
-        if (bindingResult.hasErrors()) {
-            return new ModelAndView("/createAds");
-        } else {
-            String username = principal.getName();
-            User user = userRepository.findByUsername(username);
-            String warningMessage = adsService.saveAd(ad,user);
-            if (warningMessage != null) {
-                model.addAttribute("warning", warningMessage);
-                model.addAttribute("ad", ad);
-                return new ModelAndView("/edit");
-            } else {
-                return new ModelAndView("redirect:/event");
-            }
-        }
+    private ModelAndView submitEditAd(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
+        return adsService.submitEditAdService(ad, bindingResult, principal, model);
     }
 
     @PostMapping("/apply/{id}")
     public ModelAndView applyAd(@PathVariable(name = "id") Long id, Principal principal) {
-        String username = principal.getName();
-        User user = userRepository.findByUsername(username);
-       return applicantsService.checkIfUserCanApplyToAd(id,principal);
+       return applicantsService.checkIfUserCanApplyToAdService(id,principal);
     }
 
 
@@ -104,17 +92,18 @@ public class AdsController {
             Ad ad = adOptional.get();
             User adUser = ad.getUser();
 
-            if (adUser.getRole() == null || !adUser.getRole().equals(Role.ADMIN)) {
-                if (!adUser.getUsername().equals(loggedInUsername)) {
-                    return "redirect:/event";
-                }
+            if (adUser.getUsername().equals(loggedInUsername) || isAdmin(principal)) {
+                adsRepository.deleteById(id);
             }
-            adsRepository.deleteById(id);
-            return "redirect:/event";
-        } else {
-            return "redirect:/event";
         }
+        return "redirect:/event";
     }
+
+    private boolean isAdmin(Principal principal) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
+    }
+
 
 
     @PostMapping("/edit/{id}")
@@ -126,11 +115,22 @@ public class AdsController {
             if (!ad.getUser().getUsername().equals(loggedInUsername)) {
                 return "redirect:/event";
             }
-
             m.addAttribute("ad", ad);
             return "/edit";
         } else {
             return "redirect:/event";
         }
     }
+    @GetMapping("/ViewEvent/{id}")
+    public String viewAd(@PathVariable(name = "id") Long id, Model m) {
+        Optional<Ad> ad = adsRepository.findById(id);
+        if (ad.isPresent()) {
+            m.addAttribute("ad", ad.get());
+            return "ViewAd";
+        } else {
+            return "redirect:/event";
+        }
+    }
+
 }
+

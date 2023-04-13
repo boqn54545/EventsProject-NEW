@@ -27,7 +27,8 @@ public class AdsService {
     private AdsRepository adsRepository;
 
 
-    public List<Ad> searchAds(String title, String city, InterestsEnum interest) {
+
+    public List<Ad> searchAdsService(String title, String city, InterestsEnum interest) {
         Ad searchCriteria = new Ad();
         if (title != null && !title.isEmpty()) {
             searchCriteria.setTitle(title);
@@ -50,7 +51,7 @@ public class AdsService {
         return adsRepository.findAll(example);
     }
 
-    public String saveAd(Ad ad, User user) {
+    public String saveAdService(Ad ad, User user) {
         try {
             if (ad.getMinAge() != null && ad.getMaxAge() != null && ad.getMinAge() > ad.getMaxAge()) {
                 throw new IllegalArgumentException("Minimum age cannot be greater than maximum age");
@@ -69,13 +70,13 @@ public class AdsService {
 
         }
     }
-       public ModelAndView SubmitAd(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
+       public ModelAndView SubmitAdService(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("/createAds");
         } else {
             String username = principal.getName();
             User user = userRepository.findByUsername(username);
-            String warningMessage = saveAd(ad,user);
+            String warningMessage = saveAdService(ad,user);
             if (warningMessage != null) {
                 model.addAttribute("warning", warningMessage);
                 model.addAttribute("ad", ad);
@@ -84,7 +85,23 @@ public class AdsService {
                 return new ModelAndView("redirect:/event");
             }
         }}
-    public ResponseEntity<String> applyAd(Ad ad, User user) {
+    public ModelAndView submitEditAdService(@Valid Ad ad, BindingResult bindingResult, Principal principal, Model model) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("/createAds");
+        } else {
+            String username = principal.getName();
+            User user = userRepository.findByUsername(username);
+            String warningMessage = saveAdService(ad,user);
+            if (warningMessage != null) {
+                model.addAttribute("warning", warningMessage);
+                model.addAttribute("ad", ad);
+                return new ModelAndView("/edit");
+            } else {
+                return new ModelAndView("redirect:/event");
+            }
+        }
+    }
+    public ResponseEntity<String> applyAdService(Ad ad, User user) {
         try {
             Set<User> applicants = ad.getApplicants();
             for (User applicant : applicants) {

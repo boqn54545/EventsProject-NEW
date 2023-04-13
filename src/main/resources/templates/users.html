@@ -86,7 +86,7 @@ body {
         </div>
         </td>
         <td>
-            <div sec:authorize="hasAnyAuthority('ADMIN','ORGANIZER')">
+            <div sec:authorize="hasAuthority('ADMIN')">
             <form th:action="@{/user/banUser/{id}(id=${user.id})}" method="post">
                 <input type="submit" name="ban" value="Ban">
             </form>
